@@ -702,6 +702,7 @@ namespace {
 
 int countOpenFiles()
 {
+#ifdef __linux__
     static const char * const fd_dir_name = "/proc/self/fd";
     int count = 0;
     DIR *dp = opendir(fd_dir_name);
@@ -717,6 +718,9 @@ int countOpenFiles()
         LOG(warning, "could not scan directory %s: %s", fd_dir_name, strerror(errno));
     }
     return count;
+#else
+    return 0;
+#endif
 }
 
 void
